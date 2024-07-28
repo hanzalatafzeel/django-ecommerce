@@ -1,0 +1,412 @@
+
+{% extends "base.html" %} {% block content %}
+{% load static %}
+<div class="text-center bg-black rounded-lg text-white p-2 text-xl mx-1">
+  <h2 class="inline-block mx-2">Extra 30% off on kids items</h2>
+  <a href="#" class="">Get Now</a>
+</div>
+
+{% comment %} herosection {% endcomment %}
+
+<div class="grid lg:grid-cols-2 text-black mt-2 rounded-md ">
+  <div class="col bg-[#ffffff] flex p-5 ">
+    <div class="m-auto z-10 p-5">
+      <h1 class="text-3xl">
+        EXCITING
+        <span class="font-extrabold">
+          PLACE FOR <br />
+          WHOLE</span
+        >
+        FAMILY TO <br />SHOP
+      </h1>
+
+      <p class="my-2">
+        Shop our curated collection of trendy clothing for men <br />and women.
+      </p>
+      <button
+        class="bg-black hover:bg-gray-500 text-[#ffffff] font-bold py-2 px-4 rounded mt-2"
+      >
+        Shop Now
+      </button>
+    </div>
+
+    {% comment %} blob {% endcomment %}
+
+    <div
+      class="blob bg-[#c5f5ef] lg:h-[350px] lg:w-[350px] absolute bottom-1 left-[-80px] rounded-full"
+    >
+      <div
+        class="blob-inner bg-white lg:h-[280px] lg:w-[280px] absolute bottom-8 left-6 rounded-full"
+      ></div>
+    </div>
+  </div>
+  <div class="col bg-[#c5f5e5]">
+    {% comment %} slider {% endcomment %}
+    <div class="carousel w-full">
+      <div id="item1" class="carousel-item w-full">
+        <img src="{% static '/image/image.png' %}" class="w-full" />
+      </div>
+      <div id="item2" class="carousel-item w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+          class="w-full"
+        />
+      </div>
+      <div id="item3" class="carousel-item w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+          class="w-full"
+        />
+      </div>
+      <div id="item4" class="carousel-item w-full">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+          class="w-full"
+        />
+      </div>
+    </div>
+    <div class="w-full justify-center mt-0 gap-2 px-6 p-2">
+      <p>
+        <span class="font-semibold">New Arrivals Now Available</span> <br />
+        Explore our latest collection for the season.
+      </p>
+
+      <a href="#item1" class="btn btn-xs rounded-full">1</a>
+      <a href="#item2" class="btn btn-xs rounded-full">2</a>
+      <a href="#item3" class="btn btn-xs rounded-full">3</a>
+      <a href="#item4" class="btn btn-xs rounded-full">4</a>
+    </div>
+  </div>
+</div>
+
+{% comment %} we provide best {% endcomment %}
+
+<div class="px-8 p-4 text-black bg-[#ebf2f1]">
+  <h1 class="text-center text-4xl">
+    <span class="font-bold font-serif">We Provide best</span> customer
+    experiences
+  </h1>
+
+  <div
+    class="grid lg:grid-cols-4 place-items-center md:grid-cols-2 text-center p-5 mt-6"
+  >
+    <div
+      class="cols mt-8 bg-white p-4 lg:min-w-[280px] lg:h-[200px] rounded-md"
+    >
+      <img src="/static/image/ogproducts.png" alt="" class="mx-auto w-12" />
+
+      <h2 class="font-semibold text-xl mt-3">Original Products</h2>
+      <p class="mt-2 leading-tight">
+        We will provide money back <br />
+        guarantee if product is not <br />
+        original
+      </p>
+    </div>
+    <div
+      class="cols mt-8 bg-white p-4 lg:min-w-[280px] lg:h-[200px] rounded-md"
+    >
+      <img src="/static/image/thumsup.png" alt="" class="mx-auto w-12" />
+
+      <h2 class="font-semibold text-xl mt-3">Satisfaction Guarantee</h2>
+      <p class="mt-2 leading-tight">
+        Exchange the product you’ve <br />purchased if it doesn’t fit to<br />
+        you
+      </p>
+    </div>
+    <div
+      class="cols mt-8 bg-white p-4 lg:min-w-[280px] lg:h-[200px] rounded-md"
+    >
+      <img src="/static/image/new.png" alt="" class="mx-auto w-12" />
+
+      <h2 class="font-semibold text-xl mt-3">New Arrivals Everyday</h2>
+      <p class="mt-2 leading-tight">
+        We updates our collections <br />almost everyday
+      </p>
+    </div>
+    <div
+      class="cols mt-8 bg-white p-4 lg:min-w-[280px] lg:h-[200px] rounded-md"
+    >
+      <img src="/static/image/free.png" alt="" class="mx-auto w-12" />
+
+      <h2 class="font-semibold text-xl mt-3">Fast & Free Shipping</h2>
+      <p class="mt-2 leading-tight">
+        We offer fast and free shipping <br />for our loyal customers
+      </p>
+    </div>
+  </div>
+</div>
+
+{% comment %} our products {% endcomment %}
+
+<div class="products">
+  <div class="flex justify-between p-5 w-[85%] mx-auto">
+    <div class="text-black">
+      <h1 class="text-2xl">
+        <span class="font-semibold">Featured</span> Products
+      </h1>
+    </div>
+    <div class="text">
+      <a href="#" class="btn btn-ghost">View All</a>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-4  md:grid-cols-3 lg:w-[85%] sm:w-[100%] mx-auto  mb-4 ">
+    <div class="card bg-white text-black w-[250px] hover:scale-105 mx-auto shadow-xl my-2">
+      <figure>
+        <img
+          class="h-[250px] w-full"
+          src="/static/image/product1.png"
+          alt="Shoes"
+        />
+      </figure>
+      <div class="card-body">
+        <div class="card-title justify-between">
+          <div class="card-title">
+            Shoes!
+            <h1 class="badge badge-secondary">NEW</h1>
+          </div>
+          <div class="justify-end float-right">$999</div>
+        </div>
+
+        <button
+          class="btn btn-outline border-[#4f7c87] text-[#4f7c87] hover:bg-[#4f7c87] hover:text-white"
+        >
+          Add to cart
+        </button>
+      </div>
+    </div>
+
+    <div class="card bg-white text-black w-[250px] hover:scale-105 mx-auto shadow-xl  my-2">
+        <figure>
+          <img
+            class="h-[250px] w-full"
+            src="/static/image/product2.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <div class="card-title justify-between">
+            <div class="card-title">
+              Shoes!
+              <h1 class="badge badge-secondary">NEW</h1>
+            </div>
+            <div class="justify-end float-right">$999</div>
+          </div>
+  
+          <button
+            class="btn btn-outline border-[#4f7c87] text-[#4f7c87] hover:bg-[#4f7c87] hover:text-white"
+          >
+            Add to cart
+          </button>
+        </div>
+      </div>
+
+      <div class="card bg-white text-black w-[250px] hover:scale-105 mx-auto shadow-xl my-2">
+        <figure>
+          <img
+            class="h-[250px] w-full"
+            src="/static/image/product3.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <div class="card-title justify-between">
+            <div class="card-title">
+              Shoes!
+              <h1 class="badge badge-secondary">NEW</h1>
+            </div>
+            <div class="justify-end float-right">$999</div>
+          </div>
+  
+          <button
+            class="btn btn-outline border-[#4f7c87] text-[#4f7c87] hover:bg-[#4f7c87] hover:text-white"
+          >
+            Add to cart
+          </button>
+        </div>
+      </div>
+
+      
+      <div class="card bg-white text-black w-[250px] hover:scale-105 mx-auto shadow-xl my-2">
+        <figure>
+          <img
+            class="h-[250px] w-full"
+            src="/static/image/product4.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <div class="card-title justify-between">
+            <div class="card-title">
+              Shoes!
+              <h1 class="badge badge-secondary">NEW</h1>
+            </div>
+            <div class="justify-end float-right">$999</div>
+          </div>
+  
+          <button
+            class="btn btn-outline border-[#4f7c87] text-[#4f7c87] hover:bg-[#4f7c87] hover:text-white"
+          >
+            Add to cart
+          </button>
+        </div>
+      </div>
+  
+
+
+
+
+  </div>
+</div>
+
+{% comment %} brand section {% endcomment %}
+
+<div class="p-5 text-black bg-[#ebf2f1]">
+  <h1 class="text-center text-4xl mt-8">
+    <span class="font-bold font-serif"
+      >Discover the brands loved by millions of customers</span
+    >
+  </h1>
+
+  <div class="grid lg:grid-cols-5 md:grid-cols-3 gap-1 text-center p-5 mt-3">
+    <div class="cols mt-8">
+      <img
+        src="/static/image/adidas.png"
+        alt=""
+        class="mx-auto w-[200px] h-[150px]"
+      />
+    </div>
+    <div class="cols mt-8">
+      <img
+        src="/static/image/levis.png"
+        alt=""
+        class="mx-auto w-[200px] h-[150px]"
+      />
+    </div>
+    <div class="cols mt-8">
+      <img
+        src="/static/image/ck.png"
+        alt=""
+        class="mx-auto w-[200px] h-[150px]"
+      />
+    </div>
+    <div class="cols mt-8">
+      <img
+        src="/static/image/gucci.png"
+        alt=""
+        class="mx-auto w-[200px] h-[150px]"
+      />
+    </div>
+    <div class="cols mt-8">
+      <img
+        src="/static/image/dg.png"
+        alt=""
+        class="mx-auto w-[200px] h-[150px]"
+      />
+    </div>
+  </div>
+</div>
+
+{% comment %} faq section  {% endcomment %}
+<div class="grid  lg:grid-cols-3 text-black mt-2 rounded-md w-[90%] mx-auto">
+    <div class="col bg-[#ffffff] flex p-5">
+      <div class="m-auto z-10 p-5">
+        <h1 class="text-3xl">
+          <span class="font-extrabold">
+            FAQs</span>
+
+        </h1>
+  
+        <p class="my-2">
+            Find answers to common questions about purchase, sizing and shipping.
+        </p>
+        <button
+          class="btn btn-outline border-[#4f7c87] text-[#4f7c87] hover:bg-[#4f7c87] hover:text-white"
+        >
+          Contact Us
+        </button>
+      </div>
+    </div>
+
+    {% comment %} faq accordian  {% endcomment %}
+    <div class="col col-span-2 ">
+        <div class="join join-vertical w-full my-10">
+            <div class="collapse collapse-arrow join-item border  ">
+              <input type="radio" name="my-accordion-4"  />
+              <div class="collapse-title text-xl font-medium">Click to open this one and close others</div>
+              <div class="collapse-content">
+                <p>hello</p>
+              </div>
+            </div>
+            <div class="collapse collapse-arrow join-item  border">
+              <input type="radio" name="my-accordion-4" />
+              <div class="collapse-title text-xl font-medium">Click to open this one and close others</div>
+              <div class="collapse-content">
+                <p>hello</p>
+              </div>
+            </div>
+            <div class="collapse collapse-arrow join-item border">
+              <input type="radio" name="my-accordion-4" />
+              <div class="collapse-title text-xl font-medium">Click to open this one and close others</div>
+              <div class="collapse-content">
+                <p>hello</p>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+
+  {% comment %} newsleter section  {% endcomment %}
+  <section class=" bg-[#ebf2f1]">
+
+      
+      <div class="grid  lg:grid-cols-2 text-black mt-2  rounded-md lg:w-[90%] mx-auto">
+    <div class="col  flex p-5">
+      <div class="m-auto z-10 p-5">
+        <h1 class="text-3xl">
+            <span class="font-extrabold">
+                Stay Updated with Our <br> Newsletter</span>
+
+        </h1>
+  
+        <p class="my-2">
+            Subscribe to our newsletter for the latest product updates and promotions.
+        </p>
+
+        <div class="my-4">
+            <input type="text" placeholder="Your Email Here" class="input input-bordered w-full max-w-xs rounded-md mr-2 my-2" />
+            <button
+            class="btn btn-outline border-[#4f7c87] bg-[#4f7c87]  hover:bg-transparent text-white"
+            >
+            Contact Us
+        </button>
+
+        </div>
+        <p>By joining, you agree to our Terms and Conditions</p>
+    </div>
+</div>
+
+{% comment %} faq accordian  {% endcomment %}
+<div class="col p-8 ">
+    <div class="card image-full  shadow-xl">
+        <figure>
+          <img class="opacity-100 "
+            src="/static/image/banner.jpg"
+            alt="Shoes" />
+        </figure>
+        <div class="card-body grid content-end  ">
+          <h2 class="card-title text-white ">Shoes!</h2>
+          <p class="place-content-end flex-grow-0 text-white">If a dog chews shoes whose shoes does he choose?</p>
+          <div class="card-actions ">
+            <button  class="btn   bg-[#4f7c87] border-[#4f7c87] text-white hover:bg-transparent hover:border-[#4f7c87] hover:text-white">Shop Now</button>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+</section>
+
+{% endblock %}
+
