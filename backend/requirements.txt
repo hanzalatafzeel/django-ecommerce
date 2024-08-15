@@ -1,0 +1,16 @@
+Django>=6.0,<6.1
+djangorestframework
+django-filter
+django-cors-headers
+djangorestframework-simplejwt
+channels
+channels-redis
+daphne
+psycopg[binary]
+redis
+redislite
+python-dotenv
+gunicorn
+faker
+# Optional: real Stripe payment gateway
+# stripe

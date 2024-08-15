@@ -1,0 +1,24 @@
+# Dependencies
+.venv/
+__pycache__/
+*.py[cod]
+node_modules/
+
+# Env / secrets
+.env
+*.pem
+
+# Databases & media
+db.sqlite3
+media/
+
+# Build artifacts
+staticfiles/
+dist/
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
