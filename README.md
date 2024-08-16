@@ -1,130 +1,124 @@
-# VoltMart — High-Volume E-Commerce Platform
+# VoltMart
 
-A full-stack, high-volume e-commerce platform rebuilt from the django-ecommerce starter:
+A full-stack e-commerce platform: a Django REST API with a React single-page storefront and a staff-only admin dashboard.
 
-| Layer | Stack |
-|---|---|
-| Backend | **Django 6 + Django REST Framework** (Python 3.14) |
-| Realtime | **Django Channels** (WebSockets) for live order tracking |
-| Database | **PostgreSQL 16** (production, docker-compose) · **SQLite** (zero-config dev fallback) |
-| Cache | **Redis 7** (embedded `redislite` in dev; docker-compose in prod) |
-| Frontend | **React 19 + Vite** SPA |
-| Payments | Simulated gateway instantly-processed (Stripe-ready layer with webhook) |
-| Auth | JWT (`djangorestframework-simplejwt`), access + refresh |
+The storefront covers the whole customer journey — browsing, search and filters, a cart, checkout with coupons, order tracking over WebSockets, and recommendations. The admin dashboard manages products, orders, customers, coupons, inventory, and analytics.
 
-**Live demo feature:** place an order, open its tracking page, then run
-`python manage.py advance_orders --order <id>` — the page updates in real time over WebSockets.
+![Storefront](docs/screenshot-storefront.png)
 
----
+## Stack
+
+| Layer    | Technology                                                              |
+|----------|-------------------------------------------------------------------------|
+| Backend  | Django 6, Django REST Framework, Channels                                |
+| Frontend | React 19, Vite                                                           |
+| Database | PostgreSQL (Docker) or SQLite (local dev)                                |
+| Cache    | Redis (embedded `redislite` in dev)                                      |
+| Auth     | JWT (simplejwt) with access and refresh tokens                           |
+| Payments | Simulated gateway out of the box; Stripe-ready with a webhook adapter    |
 
 ## Features
 
-- **Catalog (520 seeded products, 10 brands, 13 category tree)**
-  - Paginated, searchable, filterable (`category`, `brand`, `price_max`, `in_stock`) and sortable list
-  - Redis-cached product list & detail endpoints
-  - Categories/brands with live product counts
-  - Reviews with rating aggregation (writes update product rating)
-- **Accounts** — register, JWT login, profile, address management
-- **Cart** — add / update / remove, subtotal, per-item totals
-- **Orders** — coupon discounts (`WELCOME10` 10%, `FLAT200` flat ₹200, `MEGA50` 50%), tax (18%), flat shipping, checkout from cart, cancel, full **status history + delivered_at**
-- **Payments** — mock gateway (`4242 4242 4242 4242` succeeds) with Stripe-pluggable `StripeGateway` + webhook stub
-- **Real-time order tracking** — Channels consumer `ws://…/ws/orders/<id>/?token=<jwt>` broadcasts `ORDER_STATUS` on every status transition; Redis channel layer when available
-- **Recommendations** — trending, content-based related, "frequently bought together" (co-purchase frequency table updated per order), "for you"
-- **Inventory** — low-stock report, restock, snapshot report
-- **Dashboard (admin `/admin`)** — full staff store manager: KPIs with trend deltas, revenue/orders time series, status distribution & category revenue (recharts); product manager (search/filters, inline price & stock edits, restock, add/edit modal, delete); order manager (search + status filter, detail drawer, forward-only status advancement that pushes live WS updates, cancel pre-shipment); customers (searchable, spend/order totals); coupons CRUD; categories & brands manager
-- **Management commands** — `seed_products`, `start_redis`, `benchmark`, `advance_orders`
+- **Catalog** — 500+ seeded products across 10 brands and a category tree; paginated search, filtering (category, brand, price, in-stock), sorting, Redis-cached listing and detail endpoints, reviews with rating aggregation.
+- **Cart & checkout** — cart management, coupon discounts, itemized pricing with tax and shipping.
+- **Orders & payments** — payment-confirmed status flow with a time-stamped history, cancellations before shipment, and a simulated card gateway.
+- **Live tracking** — every order status change is pushed to the tracking page over WebSockets (`WS /ws/orders/<id>/?token=<jwt>`); try it with `python manage.py advance_orders --order <id>`.
+- **Recommendations** — trending, related products, frequently-bought-together (co-purchase analysis), and personalized "for you".
+- **Admin dashboard** — KPIs with trend deltas, revenue and order charts, order/product/customer/coupon management, low-stock and restock tools.
 
-## Repo layout
+![Admin dashboard](docs/screenshot-admin.png)
 
-```
-backend/
-  config/            settings (env-driven), urls, asgi/wsgi (Channels)
-  apps/
-    core/            base models, status enums, dashboard, pagination, permissions
-    accounts/        auth, profiles, addresses
-    catalog/         products/brands/categories/tags/reviews, filters, caching, seeds
-    cart/            cart + items
-    orders/          orders, order items, coupons, status history, services
-    payments/        mock + Stripe gateways, initiate/confirm/webhook
-    inventory/       low stock / restock / report
-    recommendations/ trending, related, FBT, for-you (co-purchase)
-    realtime/        WebSocket consumers (order tracking, notifications), JWT middleware
-frontend/            React 19 + Vite SPA (shop, cart, checkout, live order tracking, dashboard)
-docker-compose.yml   PostgreSQL 16 + Redis 7 + backend + frontend
-```
+## Demo access
 
-## Quickstart (dev — no external services required)
+| Login                    | Role  |
+|--------------------------|-------|
+| `admin` / `admin12345`   | Staff |
+| `user1..user25` / `demo12345` | Customer |
+
+Coupons: `WELCOME10`, `FLAT200`, `MEGA50`. Mock card: `4242 4242 4242 4242`.
+
+## Getting started
+
+Backend and frontend run independently; the Vite dev server proxies `/api`, `/ws`, and `/static` to Django.
+
+**Backend**
 
 ```bash
-# 1. Backend
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env            # defaults: SQLite + embedded Redis
-python manage.py start_redis &  # embedded Redis on :6379 (no root needed)
+cp .env.example .env        # defaults: SQLite + embedded Redis
+python manage.py start_redis
 python manage.py migrate
 python manage.py seed_products --count 520
-python manage.py runserver      # (or: daphne for WebSockets)
-
-# 2. Frontend
-cd ../frontend
-npm install
-npm run dev                     # http://localhost:5173 (proxies /api and /ws → :8000)
+python manage.py runserver
 ```
 
-Demo users: `admin/admin12345` (staff), `user1/demo12345` … `user25/demo12345`.
-Coupons: `WELCOME10`, `FLAT200`, `MEGA50`. Magic card: `4242 4242 4242 4242`.
+For WebSocket support, serve with Daphne instead: `daphne -b 127.0.0.1 -p 8000 config.asgi:application`.
 
-### Production / docker-compose (PostgreSQL + Redis)
+**Frontend**
 
 ```bash
-docker compose up --build        # API :8000, SPA :5173, Postgres :5432, Redis :6379
-```
-`docker-compose.yml` sets `DB_ENGINE=postgres` and `REDIS_URL=redis://redis:6379/0`.
-
-## API cheat sheet (prefix `/api/v1/`)
-
-```
-POST auth/token/              JWT {username,password} → {access,refresh}
-POST accounts/register/       create user → tokens
-GET  accounts/me/             current profile
-GET|POST accounts/addresses/
-GET  catalog/products/        ?search=&category=&brand=&price_max=&ordering=&page=
-GET  catalog/products/<id>/
-GET  catalog/products/<id>/reviews/    POST (auth) {rating 1-5, comment}
-GET  catalog/categories/ | catalog/brands/
-GET  cart/ | POST cart/add/ | cart/update/ | cart/remove/
-POST orders/                  {address_id, coupon_code?} (checkout from cart)
-GET  orders/ | orders/<id>/ | orders/<id>/cancel/
-POST payments/orders/<id>/initiate/    {gateway: mock|stripe}
-POST payments/orders/<id>/confirm/     {gateway, card_number}
-GET  inventory/low-stock/ | restock/ | report/ | products/ | products/<id>/
-GET  inventory/admin/analytics/                     (admin) KPIs + 30-day series + breakdowns
-GET  inventory/admin/orders/   (admin) ?search=&status=&page=     POST …/orders/<id>/status/ {status}
-GET  inventory/admin/customers/ (admin) ?search=
-GET|POST inventory/admin/coupons/ | /coupons/<id>/  (admin) PATCH/DELETE
-GET|POST inventory/admin/categories/ | /brands/     (admin) PATCH/DELETE per item
-GET  recommendations/trending/ | for-you/ | related/<id>/ | frequently-bought/<id>/
-GET  dashboard/stats/         (admin)
-WS   /ws/orders/<id>/?token=<jwt>      ORDER_STATUS events
+cd frontend
+npm install
+npm run dev
 ```
 
-## Benchmark (Redis caching)
+Open http://localhost:5173. Admin dashboard lives at `/admin`.
 
-`python manage.py benchmark --runs 5`:
+**Full stack with Docker**
+
+```bash
+docker compose up --build
+```
+
+This runs PostgreSQL 16, Redis 7, the API, and the SPA together (config through `DB_ENGINE` and `REDIS_URL`).
+
+## API overview
+
+All routes are prefixed with `/api/v1/`.
+
+- `POST auth/token/` — login, returns access and refresh tokens
+- `accounts/` — register, profile, addresses
+- `catalog/products/` — list with `search`, `category`, `brand`, `price_max`, `ordering`; detail, reviews
+- `catalog/categories/`, `catalog/brands/` — with product counts
+- `cart/` — add, update, remove
+- `orders/` — create from cart, list, detail, cancel
+- `payments/orders/<id>/` — initiate / confirm
+- `inventory/` — low-stock, restock, reports
+- `inventory/admin/` — analytics, orders, customers, coupons, categories, brands
+- `recommendations/` — trending, for-you, related, frequently-bought
+- `dashboard/stats/` — KPIs for the admin view
+
+## Project layout
 
 ```
-list       cold 14.61ms  warm 5.33ms  → 2.74x
-filtered   cold 13.21ms  warm 5.23ms  → 2.53x
-detail     cold  9.91ms  warm 7.41ms  → 1.34x
-Overall average speedup: 2.2x
+backend/
+  config/            settings (env-driven), URLs, ASGI (Channels)
+  apps/
+    core/            shared models, dashboard, pagination, permissions
+    accounts/        auth, profiles, addresses
+    catalog/         products, brands, categories, reviews, filters, caching, seeds
+    cart/            cart and cart items
+    orders/          orders, coupons, status history, services
+    payments/        simulated and Stripe gateways
+    inventory/       low-stock, restock, reports, admin API
+    recommendations/ trending, related, co-purchase, for-you
+    realtime/        WebSocket consumers and JWT middleware
+frontend/            React 19 + Vite SPA
+docs/                screenshots
+docker-compose.yml   PostgreSQL + Redis + backend + frontend
 ```
 
 ## Configuration
 
-All runtime knobs live in `.env` (see `backend/.env.example`). Key ones:
+Runtime settings live in `.env` (template in `backend/.env.example`):
 
 - `DB_ENGINE=sqlite|postgres` — switch database without code changes
-- `REDIS_URL` / `CACHE_BACKEND` — cache + channel layer (falls back to locmem gracefully)
-- `STRIPE_SECRET_KEY` — set to enable the real Stripe gateway instead of the simulator
-- `SHOP_SIMULATED_DELIVERY_DAYS` — delivery date estimate used by the simulator
+- `REDIS_URL` / `CACHE_BACKEND` — cache and WebSocket channel layer
+- `STRIPE_SECRET_KEY` — enable the real Stripe gateway in place of the simulator
+- `SHOP_SIMULATED_DELIVERY_DAYS` — delivery estimate for the simulator
+
+## Management commands
+
+`seed_products`, `start_redis`, `advance_orders`, and `benchmark` (caching measurements) live in `backend/apps/*/management/commands/`. Add demo data with `seed_products`; run `seed_products --count N` to control the size.
